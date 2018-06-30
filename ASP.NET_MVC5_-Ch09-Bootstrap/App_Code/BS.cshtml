@@ -1,0 +1,112 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+    
+    </div>
+</body>
+</html>
+
+@functions
+{
+    public enum Variations
+    {
+        Default,
+        Primary,
+        Success,
+        Info,
+        Warning,
+        Danger
+    }
+
+    private static string GetVariation(string prefix, Variations? variation)
+    {
+        if(variation == null)
+        {
+            return null;
+        }
+
+        return string.Concat(prefix, "~", variation.ToString().ToLower());
+    }
+}
+
+@helper Label(object display,
+            Variations? variation = Variations.Default,
+            string cssClass =null,
+            bool pullRight = false)
+{
+        var pullRightClass = pullRight ? "pull-right" : null;
+
+        <span class="label @GetVariation("label", variation)
+                            @pullRightClass @cssClass">@display</span>
+}
+
+@helper Badge(object display, string cssClass ="", bool pullRight = false)
+{
+        var pullRightClass = pullRight ? "pull-right" : null;
+
+        <span class="badge @pullRightClass @cssClass">@display</span>
+
+}
+
+@helper Badge(int value, string cssClass =null, bool pullRight = false)
+{
+    if(value >0)
+    {
+        @Badge(value.ToString(), cssClass: cssClass, pullRight: pullRight)
+    }
+}
+
+@helper Alert(object display,
+            Variations? variation = null,
+            string  cssClass = null,
+            bool dismissible = false)
+{
+    if(dismissible)
+        {
+            <div class="alert @GetVariation("alert", variation) alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+}
+    else
+    {
+        <div class="alert @GetVariation("alert",variation)">@display</div>
+    }
+}
+
+@helper Progress(int value,
+                string text = null,
+                Variations? variation = null,
+                string cssClass =null,
+                bool striped = false,
+                bool active = false)
+{
+    var variationClass = GetVariation("progress-bar", variation);
+    var stripedClass = striped ? "progress-bar-striped" : null;
+    var activeClass = active ? "active" : null;
+
+    <div class="progress">
+        <div class="progress-bar @variationClass @stripedClass @activeClass
+             @cssClass"
+             role="progressbar" aria-valuenow="@value" aria-valuemin="0"
+                aria-valuemax="100"
+             style="width: @value%">
+            @if(!string.IsNullOrEmpty(text))
+            {
+                <span class="sr-only">@text</span>
+            }
+        </div>
+    </div>
+}

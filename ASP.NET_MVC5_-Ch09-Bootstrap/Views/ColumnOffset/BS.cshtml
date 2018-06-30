@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "BS";
+}
+
+<h2>BS</h2>
+@BS.Label("預設文字標籤")
+@BS.Label("醒目文字標籤", variation: BS.Variations.Primary)
+
+
+<div>收信匣 @BS.Badge(3, pullRight: true)</div>
+
+@BS.Alert("發生錯誤", variation: BS.Variations.Danger, dismissible: true)
+
+@BS.Progress(85, "完成度 85%", variation: BS.Variations.Info, striped: true,active:true )
+
